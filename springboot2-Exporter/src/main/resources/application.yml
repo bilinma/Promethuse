@@ -1,0 +1,53 @@
+﻿server: 
+  tomcat:
+    uri-encoding: UTF-8
+  port: 7003
+
+endpoints:
+  prometheus:
+    id: metrics
+  metrics:
+    id: springmetrics
+    sensitive: false
+    enabled: true
+    
+management:
+  security: 
+    enabled: false
+ 
+      
+################### Spring配置  ###################
+spring:
+  metrics:
+    servo:
+      enabled: false
+  application:
+    name: springboot2-exporter
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    click:
+      driverClassName: ru.yandex.clickhouse.ClickHouseDriver
+      url: jdbc:clickhouse://49.4.64.138:8123/metrics
+      initialSize: 10
+      maxActive: 100
+      minIdle: 10
+      maxWait: 6000  
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+
+# mybatis 配置
+mybatis:
+  type-aliases-package: com.bilin.entity
+  mapper-locations: classpath:/mapper/*.xml    
+
+swagger:
+  ui: 
+    enable: true
+    basePackage: com.bilin.demo
+  
+  
+
+    

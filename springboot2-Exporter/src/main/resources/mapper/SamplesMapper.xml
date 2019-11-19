@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bilin.dao.SamplesMapper">
+    <resultMap id="BaseResultMap" type="com.bilin.entity.Samples">
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="tags" jdbcType="VARCHAR" property="tags" />
+        <result column="val" jdbcType="DOUBLE" property="val" />
+        <result column="ts" jdbcType="TIMESTAMP" property="ts" />
+        <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        name,tags,val,ts,updated
+    </sql>
+
+    <insert id="saveData" parameterType="com.bilin.entity.Samples" >
+        INSERT INTO samples
+        (name,tags,val,ts,updated)
+        VALUES
+        (#{name,jdbcType=VARCHAR}, array(#{tags,jdbcType=VARCHAR}), 
+        #{val,jdbcType=DOUBLE},#{ts,jdbcType=TIMESTAMP},#{updated,jdbcType=TIMESTAMP})
+    </insert>
+
+    <select id="selectById" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from samples
+        where name = #{name,jdbcType=VARCHAR} limit 1
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from samples limit 100
+    </select>
+</mapper>
