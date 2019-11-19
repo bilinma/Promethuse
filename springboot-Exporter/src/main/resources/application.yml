@@ -1,0 +1,41 @@
+﻿server: 
+  port: 7002
+
+
+endpoints:
+  prometheus:
+    id: metrics
+  metrics:
+    id: springmetrics
+    sensitive: false
+    enabled: true
+    
+management:
+  security: 
+    enabled: false
+ 
+      
+################### Spring配置  ###################
+spring:
+  metrics:
+    servo:
+      enabled: false
+  application:
+    name: springboot-exporter
+
+
+swagger:
+  ui: 
+    enable: true
+    basePackage: com.bilin.demo
+    
+    
+
+clickhouse:
+  address: jdbc:clickhouse://49.4.64.138:8123
+  username: default
+  password: 
+  db: metrics
+  socketTimeout: 600000
+
+    

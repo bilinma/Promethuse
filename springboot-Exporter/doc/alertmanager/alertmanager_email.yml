@@ -1,0 +1,30 @@
+# 全局配置项
+global:
+  resolve_timeout: 5m
+  
+  smtp_smarthost: 'smtp.qq.com:25' # 邮箱smtp服务器代理
+  smtp_from: '393647941@qq.com' # 发送邮箱名称
+  smtp_auth_username: '393647941@qq.com' # 邮箱名称
+  smtp_auth_password: 'Ma19850727' # 邮箱密码或授权码  
+  
+route:
+  group_by: ['cqh'] # 报警分组依据
+  group_wait: 10s # 组报警等待时间
+  group_interval: 10s # 组报警间隔时间
+  repeat_interval: 1m # 重复报警间隔时间
+  receiver: 'email'  # 发送警报的接收者的名称，以下receivers name的名称
+  
+# 定义警报接收者信息  
+receivers:
+  - name: 'email' # 警报
+    email_configs: # 邮箱配置
+    - to: '393647941@qq.com'  # 接收警报的email配置
+      #html: '{{ template "test.html" . }}' # 设定邮箱的内容模板
+      headers: { Subject: "[WARN] 报警邮件"} # 接收邮件的标题
+    
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'dev', 'instance']

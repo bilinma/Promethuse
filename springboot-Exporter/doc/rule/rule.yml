@@ -1,0 +1,11 @@
+groups:
+- name: example
+  rules:
+  - alert: HighErrorRate
+    expr: my_gauge_2{job="springboot-Exporter"} > 10
+    for: 10s
+    labels:
+      severity: error
+    annotations:
+      summary: High request latency
+      description: description info

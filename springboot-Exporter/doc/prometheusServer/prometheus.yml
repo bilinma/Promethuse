@@ -1,0 +1,43 @@
+﻿# 全局配置
+global: 
+  scrape_interval: 15s # 默认抓取间隔, 15秒向目标抓取一次数据。  
+  evaluation_interval: 30s   # 多久评估一次 规则
+  scrape_timeout: 10s   # 每次 收集数据的 超时时间
+  
+  # 当Prometheus和外部系统(联邦, 远程存储, Alertmanager)通信的时候，添加标签到任意的时间序列或者报警
+  external_labels:
+    monitor: 'codelab-monitor'
+    
+
+# 这里表示抓取对象的配置
+scrape_configs: 
+  # Prometheus的自身监控
+  - job_name: 'prometheus' # 将在采集到的时间序列数据上打上标签job=xx
+    scrape_interval: 5s # 重写了全局抓取间隔时间，由15秒重写成5秒
+    # 采集指标的默认路径为：/metrics，如 localhost:9090/metric
+    # 协议默认为http
+    static_configs:
+      - targets: ['localhost:9090']
+      
+  # springboot 服务监控
+  - job_name: 'springboot-Exporter'
+    scrape_interval: 5s  # 重写了全局抓取间隔时间，由15秒重写成5秒
+    static_configs:
+      - targets: ['119.3.240.144:7002']
+        labels:
+          group: 'springboot-client'
+          
+  # pushgateway 服务监控 
+  - job_name: 'push-metrics'
+    static_configs:
+      - targets: ['119.3.240.144:9091']
+      
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ["49.4.64.138:9093"]
+        
+rule_files:
+  - /etc/prometheus/rules/rule.yml 
+  
+  

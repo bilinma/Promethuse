@@ -1,0 +1,22 @@
+# 全局配置项
+global: 
+  resolve_timeout: 5m
+route:
+  group_by: ['HighErrorRate']
+  group_wait: 10s #组报警等待时间
+  group_interval: 10s #组报警间隔时间
+  repeat_interval: 1m #重复报警间隔时间
+  receiver: 'web.hook'
+  
+receivers:
+  - name: 'web.hook'
+    webhook_configs:
+      - url: 'http://192.168.2.240:7002/webHook/send'
+        send_resolved: true #警报被解决之后是否通知
+      
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'dev', 'instance']
